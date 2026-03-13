@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typography Pairing Explorer</title>
+
+<!-- Load all Google Fonts used in pairings -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Manrope:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Space+Grotesk:wght@300;400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&family=Figtree:wght@300;400;600;700;800&family=Nunito:wght@300;400;600;700;800&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Syne:wght@400;600;700;800&family=Work+Sans:wght@300;400;600;700&family=Archivo:wght@400;600;700;800;900&family=Outfit:wght@300;400;600;700;800&family=Josefin+Sans:ital,wght@0,100;0,300;0,400;0,600;0,700;1,300&family=Raleway:ital,wght@0,100;0,300;0,400;0,600;0,700;1,300&family=Montserrat:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;0,6..96,700;1,6..96,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;0,700;1,400&family=DM+Serif+Display:ital@0;1&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Ubuntu:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Noto+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,700;1,400&family=Albert+Sans:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Onest:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #181818;
+    --surface2: #222;
+    --border: #2a2a2a;
+    --border-hover: #444;
+    --text-primary: #f0ede8;
+    --text-secondary: #888;
+    --text-muted: #555;
+    --accent: #c8a96e;
+    --accent-dim: rgba(200, 169, 110, 0.12);
+    --pill-bg: #222;
+    --pill-active: #c8a96e;
+    --pill-active-text: #0f0f0f;
+    --tag-bg: rgba(255,255,255,0.06);
+    --tag-text: #777;
+    --radius: 4px;
+    --card-radius: 6px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .header {
+    padding: 48px 40px 0;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .header-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 4rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .header p {
+    color: var(--text-secondary);
+    font-size: 13px;
+    max-width: 520px;
+    line-height: 1.6;
+  }
+
+  /* ── Controls ── */
+  .controls {
+    padding: 28px 40px 0;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-right: 4px;
+    white-space: nowrap;
+  }
+
+  .pill {
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    background: var(--pill-bg);
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  .pill:hover { border-color: var(--border-hover); color: var(--text-primary); }
+  .pill.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--pill-active-text);
+    font-weight: 600;
+  }
+
+  .search-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .search-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 14px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    width: 260px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .search-input:focus { border-color: var(--accent); }
+  .search-input::placeholder { color: var(--text-muted); }
+
+  .results-count {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ── Toggle: text sample ── */
+  .sample-controls {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .sample-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); }
+  .sample-btn {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 11px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .sample-btn.active { background: var(--surface2); border-color: var(--border-hover); color: var(--text-primary); }
+
+  /* ── Grid ── */
+  .grid {
+    padding: 28px 40px 80px;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 2px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.2s ease;
+    cursor: default;
+  }
+  .card:hover { border-color: var(--border-hover); }
+  .card.hidden { display: none; }
+
+  .card-preview {
+    padding: 32px 28px 24px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 200px;
+    position: relative;
+  }
+
+  .card-heading {
+    line-height: 1.1;
+    color: var(--text-primary);
+  }
+
+  .card-body-text {
+    line-height: 1.65;
+    color: #a8a49e;
+  }
+
+  .card-meta-text {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    margin-top: auto;
+    padding-top: 8px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .card-footer {
+    border-top: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    background: rgba(0,0,0,0.2);
+  }
+
+  .pairing-names {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .font-name-heading {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .font-name-body {
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+  .font-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+  }
+  .font-link:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+  .font-link svg {
+    opacity: 0.5;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+  }
+  .font-link:hover svg { opacity: 1; }
+  .font-pair-sep {
+    color: var(--text-muted);
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 1;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    padding: 2px 7px;
+    border-radius: 100px;
+  }
+  .tag.free { color: #6a9955; background: rgba(106,153,85,0.1); }
+  .tag.adobe { color: #e8734a; background: rgba(232,115,74,0.1); }
+
+  /* Copy button */
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 10px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .copy-btn.copied { border-color: #6a9955; color: #6a9955; }
+
+  /* ── No results ── */
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 80px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  /* ── Section dividers ── */
+  .section-header {
+    grid-column: 1 / -1;
+    padding: 20px 4px 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .section-header h2 {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+
+  @media (max-width: 600px) {
+    .header, .controls, .grid { padding-left: 20px; padding-right: 20px; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">BBA · Typography Skill · Font Explorer</div>
+  <h1>Type Pairing<br>Explorer</h1>
+  <p>Visual rendering of all Google Fonts pairings from the typography-expert skill. Filter by use case, search by font name, preview real glyphs.</p>
+</div>
+
+<div class="controls">
+  <div class="filter-row">
+    <span class="filter-label">Use case</span>
+    <button class="pill active" data-filter="all">All pairings</button>
+    <button class="pill" data-filter="saas">SaaS / Product</button>
+    <button class="pill" data-filter="editorial">Editorial</button>
+    <button class="pill" data-filter="cultural">Cultural / Arts</button>
+    <button class="pill" data-filter="luxury">Luxury / Fashion</button>
+    <button class="pill" data-filter="branding">Branding</button>
+    <button class="pill" data-filter="health">Healthcare</button>
+    <button class="pill" data-filter="african">African Context</button>
+    <button class="pill" data-filter="mono">Display Singles</button>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">Sample text</span>
+    <div class="sample-controls">
+      <button class="sample-btn active" data-sample="default">Design & Architecture</button>
+      <button class="sample-btn" data-sample="brand">Brand & Strategy</button>
+      <button class="sample-btn" data-sample="cultural">Cultural Institutions</button>
+      <button class="sample-btn" data-sample="property">Property</button>
+    </div>
+  </div>
+  <div class="search-row">
+    <input type="text" class="search-input" placeholder="Search font name…" id="searchInput">
+    <span class="results-count" id="resultsCount"></span>
+  </div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+const SAMPLES = {
+  default: {
+    heading: 'Form Follows Function',
+    subheading: 'Honest Materials',
+    body: 'Good design is as little design as possible — the synthesis of precision, utility, and quiet restraint working together at every scale.',
+    meta: 'Architecture · Interior · Materials'
+  },
+  brand: {
+    heading: 'Strategic Brand Thinking',
+    subheading: 'Purpose & Presence',
+    body: 'Brand architecture at the intersection of identity and culture — where narrative becomes visible and institutional voice finds its form.',
+    meta: 'Brand · Communication · Strategy'
+  },
+  cultural: {
+    heading: 'The Moving Image',
+    subheading: 'Art Exchange 2025–2027',
+    body: 'A living archive of contemporary practice — curated across geographies, mediums, and the shifting boundaries of institutional representation.',
+    meta: 'Contemporary Art · Exchange · Residency'
+  },
+  property: {
+    heading: 'Petrichor',
+    subheading: '20 Hectares · Fynbos · Garden Route',
+    body: 'An off-grid architectural home designed by Koop Design — set within indigenous Sandstone Fynbos, connecting material to landscape at every threshold.',
+    meta: 'Architecture · Land · Fynbos · Western Cape'
+  }
+};
+
+let currentSample = 'default';
+
+const PAIRINGS = [
+  // ── SaaS / Product / Tech ──────────────────────────────────
+  { id: 'sp1', category: 'saas', tags: ['free'],
+    headingFont: 'Space Grotesk', headingWeight: 600, headingSize: 2.2,
+    bodyFont: 'Inter', bodyWeight: 400, bodySize: 0.9,
+    char: 'Technical + distinctive',
+    gfonts: ['Space+Grotesk:wght@600', 'Inter:wght@400'] },
+
+  { id: 'sp2', category: 'saas', tags: ['free'],
+    headingFont: 'Plus Jakarta Sans', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Manrope', bodyWeight: 400, bodySize: 0.9,
+    char: 'Modern fintech',
+    gfonts: [] },
+
+  { id: 'sp3', category: 'saas', tags: ['free'],
+    headingFont: 'DM Sans', headingWeight: 700, headingSize: 2.2,
+    bodyFont: 'DM Sans', bodyWeight: 400, bodySize: 0.9,
+    char: 'Mono-family weight contrast',
+    gfonts: [] },
+
+  { id: 'sp4', category: 'saas', tags: ['free'],
+    headingFont: 'Outfit', headingWeight: 700, headingSize: 2.2,
+    bodyFont: 'Source Sans 3', bodyWeight: 400, bodySize: 0.9,
+    char: 'Clean geometric + humanist',
+    gfonts: [] },
+
+  { id: 'sp5', category: 'saas', tags: ['free'],
+    headingFont: 'Albert Sans', headingWeight: 700, headingSize: 2.2,
+    bodyFont: 'Figtree', bodyWeight: 400, bodySize: 0.9,
+    char: 'Warm-neutral pair',
+    gfonts: [] },
+
+  // ── Editorial / Long-Form ──────────────────────────────────
+  { id: 'ed1', category: 'editorial', tags: ['free'],
+    headingFont: 'Playfair Display', headingWeight: 700, headingSize: 2.2,
+    bodyFont: 'Source Serif 4', bodyWeight: 400, bodySize: 0.9,
+    char: 'Classic editorial',
+    gfonts: [] },
+
+  { id: 'ed2', category: 'editorial', tags: ['free'],
+    headingFont: 'Fraunces', headingWeight: 700, headingSize: 2.2,
+    bodyFont: 'Crimson Pro', bodyWeight: 400, bodySize: 0.9,
+    char: 'Literary, expressive',
+    gfonts: [] },
+
+  { id: 'ed3', category: 'editorial', tags: ['free'],
+    headingFont: 'DM Serif Display', headingWeight: 400, headingSize: 2.4,
+    bodyFont: 'DM Sans', bodyWeight: 400, bodySize: 0.9,
+    char: 'Same-designer harmony',
+    gfonts: [] },
+
+  { id: 'ed4', category: 'editorial', tags: ['free'],
+    headingFont: 'Bodoni Moda', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Lora', bodyWeight: 400, bodySize: 0.9,
+    char: 'Fashion editorial contrast',
+    gfonts: [] },
+
+  { id: 'ed5', category: 'editorial', tags: ['free'],
+    headingFont: 'EB Garamond', headingWeight: 700, headingSize: 2.4,
+    bodyFont: 'Source Serif 4', bodyWeight: 400, bodySize: 0.9,
+    char: 'Historical authority',
+    gfonts: [] },
+
+  { id: 'ed6', category: 'editorial', tags: ['free'],
+    headingFont: 'Playfair Display', headingWeight: 400, headingSize: 2.4,
+    bodyFont: 'Libre Baskerville', bodyWeight: 400, bodySize: 0.875,
+    char: 'Transitional serif pair',
+    gfonts: [] },
+
+  // ── Cultural / Institution ──────────────────────────────────
+  { id: 'cu1', category: 'cultural', tags: ['free'],
+    headingFont: 'Cormorant Garamond', headingWeight: 600, headingSize: 2.5,
+    bodyFont: 'Source Serif 4', bodyWeight: 400, bodySize: 0.9,
+    char: 'Refined cultural',
+    gfonts: [] },
+
+  { id: 'cu2', category: 'cultural', tags: ['free'],
+    headingFont: 'Syne', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Work Sans', bodyWeight: 400, bodySize: 0.9,
+    char: 'Contemporary arts',
+    gfonts: [] },
+
+  { id: 'cu3', category: 'cultural', tags: ['free'],
+    headingFont: 'Playfair Display', headingWeight: 700, headingSize: 2.2,
+    bodyFont: 'Libre Baskerville', bodyWeight: 400, bodySize: 0.875,
+    char: 'Traditional institution',
+    gfonts: [] },
+
+  { id: 'cu4', category: 'cultural', tags: ['free'],
+    headingFont: 'EB Garamond', headingWeight: 600, headingSize: 2.6,
+    bodyFont: 'Source Sans 3', bodyWeight: 400, bodySize: 0.9,
+    char: 'Museum / academic',
+    gfonts: [] },
+
+  { id: 'cu5', category: 'cultural', tags: ['free'],
+    headingFont: 'Fraunces', headingWeight: 600, headingSize: 2.3,
+    bodyFont: 'Source Sans 3', bodyWeight: 400, bodySize: 0.9,
+    char: 'Literary arts institution',
+    gfonts: [] },
+
+  // ── Luxury / Fashion ──────────────────────────────────────
+  { id: 'lx1', category: 'luxury', tags: ['free'],
+    headingFont: 'Cormorant Garamond', headingWeight: 300, headingSize: 2.8,
+    bodyFont: 'Raleway', bodyWeight: 300, bodySize: 0.875,
+    char: 'Minimal luxury',
+    gfonts: [] },
+
+  { id: 'lx2', category: 'luxury', tags: ['free'],
+    headingFont: 'Josefin Sans', headingWeight: 300, headingSize: 2.2,
+    bodyFont: 'Lora', bodyWeight: 400, bodySize: 0.9,
+    char: 'Geometric elegance',
+    gfonts: [] },
+
+  { id: 'lx3', category: 'luxury', tags: ['free'],
+    headingFont: 'Bodoni Moda', headingWeight: 400, headingSize: 2.4,
+    bodyFont: 'Montserrat', bodyWeight: 300, bodySize: 0.875,
+    char: 'Fashion editorial',
+    gfonts: [] },
+
+  { id: 'lx4', category: 'luxury', tags: ['free'],
+    headingFont: 'Playfair Display', headingWeight: 400, headingSize: 2.5,
+    bodyFont: 'Raleway', bodyWeight: 300, bodySize: 0.875,
+    char: 'Classic fashion',
+    gfonts: [] },
+
+  { id: 'lx5', category: 'luxury', tags: ['free'],
+    headingFont: 'Cormorant Garamond', headingWeight: 300, headingSize: 3.0,
+    bodyFont: 'Montserrat', bodyWeight: 200, bodySize: 0.85,
+    char: 'Ultra-refined editorial',
+    gfonts: [] },
+
+  // ── Branding / Agency / Creative ──────────────────────────
+  { id: 'br1', category: 'branding', tags: ['free'],
+    headingFont: 'Syne', headingWeight: 800, headingSize: 2.2,
+    bodyFont: 'Figtree', bodyWeight: 400, bodySize: 0.9,
+    char: 'Creative agency',
+    gfonts: [] },
+
+  { id: 'br2', category: 'branding', tags: ['free'],
+    headingFont: 'Archivo', headingWeight: 900, headingSize: 2.0,
+    bodyFont: 'Manrope', bodyWeight: 400, bodySize: 0.9,
+    char: 'Bold brand identity',
+    gfonts: [] },
+
+  { id: 'br3', category: 'branding', tags: ['free'],
+    headingFont: 'Space Grotesk', headingWeight: 600, headingSize: 2.1,
+    bodyFont: 'Source Sans 3', bodyWeight: 400, bodySize: 0.9,
+    char: 'Tech-editorial',
+    gfonts: [] },
+
+  { id: 'br4', category: 'branding', tags: ['free'],
+    headingFont: 'Outfit', headingWeight: 800, headingSize: 2.2,
+    bodyFont: 'Inter', bodyWeight: 400, bodySize: 0.9,
+    char: 'Startup brand energy',
+    gfonts: [] },
+
+  { id: 'br5', category: 'branding', tags: ['free'],
+    headingFont: 'Raleway', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Merriweather', bodyWeight: 300, bodySize: 0.875,
+    char: 'Elegant brand + editorial',
+    gfonts: [] },
+
+  // ── Healthcare / Wellbeing ───────────────────────────────
+  { id: 'hc1', category: 'health', tags: ['free'],
+    headingFont: 'Nunito', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Source Sans 3', bodyWeight: 400, bodySize: 0.9,
+    char: 'Warm, trustworthy',
+    gfonts: [] },
+
+  { id: 'hc2', category: 'health', tags: ['free'],
+    headingFont: 'Plus Jakarta Sans', headingWeight: 600, headingSize: 2.1,
+    bodyFont: 'Figtree', bodyWeight: 400, bodySize: 0.9,
+    char: 'Modern health / impact',
+    gfonts: [] },
+
+  { id: 'hc3', category: 'health', tags: ['free'],
+    headingFont: 'Atkinson Hyperlegible', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Atkinson Hyperlegible', bodyWeight: 400, bodySize: 0.9,
+    char: 'Maximum accessibility',
+    gfonts: [] },
+
+  { id: 'hc4', category: 'health', tags: ['free'],
+    headingFont: 'DM Sans', headingWeight: 600, headingSize: 2.1,
+    bodyFont: 'Nunito', bodyWeight: 400, bodySize: 0.9,
+    char: 'Clean, approachable',
+    gfonts: [] },
+
+  // ── African / Pan-African ─────────────────────────────────
+  { id: 'af1', category: 'african', tags: ['free'],
+    headingFont: 'Ubuntu', headingWeight: 700, headingSize: 2.2,
+    bodyFont: 'Ubuntu', bodyWeight: 400, bodySize: 0.9,
+    char: 'African scripts + Latin',
+    gfonts: [] },
+
+  { id: 'af2', category: 'african', tags: ['free'],
+    headingFont: 'Noto Sans', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Noto Sans', bodyWeight: 400, bodySize: 0.9,
+    char: 'Maximum language coverage',
+    gfonts: [] },
+
+  { id: 'af3', category: 'african', tags: ['free'],
+    headingFont: 'Plus Jakarta Sans', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Source Sans 3', bodyWeight: 400, bodySize: 0.9,
+    char: 'Contemporary African brand',
+    gfonts: [] },
+
+  { id: 'af4', category: 'african', tags: ['free'],
+    headingFont: 'Onest', headingWeight: 700, headingSize: 2.1,
+    bodyFont: 'Albert Sans', bodyWeight: 400, bodySize: 0.9,
+    char: 'Modern Pan-African feel',
+    gfonts: [] },
+
+  // ── Display Singles ────────────────────────────────────────
+  { id: 'mn1', category: 'mono', tags: ['free'],
+    headingFont: 'Cormorant Garamond', headingWeight: 400, headingSize: 3.0,
+    bodyFont: null, bodyWeight: 300, bodySize: 0.85,
+    char: 'Display — elegant serif',
+    gfonts: [] },
+
+  { id: 'mn2', category: 'mono', tags: ['free'],
+    headingFont: 'Fraunces', headingWeight: 700, headingSize: 2.8,
+    bodyFont: null, bodyWeight: 400, bodySize: 0.9,
+    char: 'Display — expressive optical',
+    gfonts: [] },
+
+  { id: 'mn3', category: 'mono', tags: ['free'],
+    headingFont: 'Syne', headingWeight: 800, headingSize: 2.5,
+    bodyFont: null, bodyWeight: 400, bodySize: 0.9,
+    char: 'Display — expressive grotesque',
+    gfonts: [] },
+
+  { id: 'mn4', category: 'mono', tags: ['free'],
+    headingFont: 'IBM Plex Sans', headingWeight: 700, headingSize: 2.2,
+    bodyFont: 'JetBrains Mono', bodyWeight: 400, bodySize: 0.85,
+    char: 'Technical / developer',
+    gfonts: [] },
+];
+
+// ── Render ────────────────────────────────────────────────────────────
+const grid = document.getElementById('grid');
+const searchInput = document.getElementById('searchInput');
+const resultsCount = document.getElementById('resultsCount');
+
+let activeFilter = 'all';
+let searchQuery = '';
+
+function getSample() { return SAMPLES[currentSample]; }
+
+function cssLine(p) {
+  const h = p.headingFont;
+  const b = p.bodyFont || p.headingFont;
+  return `font-family: '${h}', serif;\n/* Body: '${b}' */`;
+}
+
+function importLine(p) {
+  const fonts = new Set([p.headingFont, p.bodyFont].filter(Boolean));
+  const names = [...fonts].map(f => f.replace(/ /g,'+')).join('&family=');
+  return `@import url('https://fonts.googleapis.com/css2?family=${names}&display=swap');`;
+}
+
+function buildCard(p) {
+  const s = getSample();
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.id = p.id;
+  card.dataset.category = p.category;
+  card.dataset.fonts = [p.headingFont, p.bodyFont].filter(Boolean).join(' ').toLowerCase();
+
+  const bodyStyle = p.bodyFont
+    ? `font-family: '${p.bodyFont}', sans-serif; font-weight: ${p.bodyWeight}; font-size: ${p.bodySize}rem;`
+    : `font-family: '${p.headingFont}', serif; font-weight: ${p.bodyWeight}; font-size: ${p.bodySize}rem;`;
+
+  const tagHtml = p.tags.map(t => `<span class="tag ${t}">${t === 'free' ? 'Google Fonts' : 'Adobe'}</span>`).join('');
+
+  const extIcon = `<svg width="9" height="9" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 9L9 1M9 1H3.5M9 1V6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+  function fontLink(name) {
+    const slug = name.replace(/ /g, '+');
+    const url = `https://fonts.google.com/specimen/${slug}`;
+    return `<a class="font-link" href="${url}" target="_blank" rel="noopener" title="Open ${name} on Google Fonts">${name}${extIcon}</a>`;
+  }
+
+  const headingLink = fontLink(p.headingFont);
+  const bodyLink = (p.bodyFont && p.bodyFont !== p.headingFont) ? fontLink(p.bodyFont) : '';
+  const nameLine = bodyLink
+    ? `${headingLink}<span class="font-pair-sep">×</span>${bodyLink}`
+    : headingLink;
+
+  card.innerHTML = `
+    <div class="card-preview">
+      <div class="card-heading" style="font-family: '${p.headingFont}', serif; font-weight: ${p.headingWeight}; font-size: ${p.headingSize}rem; line-height: 1.08; letter-spacing: -0.02em;">
+        ${s.heading}
+      </div>
+      <div class="card-body-text" style="${bodyStyle}">
+        ${s.body}
+      </div>
+      <div class="card-meta-text">${s.meta}</div>
+    </div>
+    <div class="card-footer">
+      <div class="pairing-names">
+        <div class="font-name-heading">${nameLine}</div>
+        <div class="font-name-body">${p.char}</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+        ${tagHtml}
+        <button class="copy-btn" data-id="${p.id}">Copy CSS</button>
+      </div>
+    </div>
+  `;
+
+  return card;
+}
+
+function render() {
+  grid.innerHTML = '';
+  const s = searchQuery.toLowerCase();
+  let visible = 0;
+
+  PAIRINGS.forEach(p => {
+    const catMatch = activeFilter === 'all' || p.category === activeFilter;
+    const searchMatch = !s || p.fonts?.includes(s) ||
+      p.headingFont.toLowerCase().includes(s) ||
+      (p.bodyFont || '').toLowerCase().includes(s) ||
+      p.char.toLowerCase().includes(s) ||
+      p.category.toLowerCase().includes(s);
+
+    if (catMatch && searchMatch) {
+      grid.appendChild(buildCard(p));
+      visible++;
+    }
+  });
+
+  if (visible === 0) {
+    const msg = document.createElement('div');
+    msg.className = 'no-results';
+    msg.textContent = 'No pairings match — try a different filter or search term.';
+    grid.appendChild(msg);
+  }
+
+  resultsCount.textContent = visible === PAIRINGS.length
+    ? `${visible} pairings`
+    : `${visible} of ${PAIRINGS.length} pairings`;
+}
+
+// ── Event listeners ───────────────────────────────────────────────────
+document.querySelectorAll('.pill').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+document.querySelectorAll('.sample-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sample-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSample = btn.dataset.sample;
+    render();
+  });
+});
+
+searchInput.addEventListener('input', () => {
+  searchQuery = searchInput.value;
+  render();
+});
+
+grid.addEventListener('click', e => {
+  const btn = e.target.closest('.copy-btn');
+  if (!btn) return;
+  const id = btn.dataset.id;
+  const p = PAIRINGS.find(x => x.id === id);
+  if (!p) return;
+  const css = `${importLine(p)}\n\nh1, h2, h3 {\n  font-family: '${p.headingFont}', serif;\n  font-weight: ${p.headingWeight};\n}\n\nbody, p {\n  font-family: '${p.bodyFont || p.headingFont}', sans-serif;\n  font-weight: ${p.bodyWeight};\n}`;
+  navigator.clipboard.writeText(css).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy CSS'; btn.classList.remove('copied'); }, 1500);
+  });
+});
+
+// ── Init ──────────────────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
