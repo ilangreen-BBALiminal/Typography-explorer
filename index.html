@@ -166,6 +166,54 @@
   }
   .sample-btn.active { background: var(--surface2); border-color: var(--border-hover); color: var(--text-primary); }
 
+  /* ── Custom text inputs ── */
+  .custom-text-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-top: 4px;
+  }
+  .text-field-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .text-field-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .custom-text-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 13px;
+    width: 100%;
+    outline: none;
+    resize: none;
+    transition: border-color 0.15s;
+    line-height: 1.5;
+  }
+  .custom-text-input:focus {
+    border-color: var(--accent);
+  }
+  .custom-text-input::placeholder { color: var(--text-muted); }
+  .custom-text-input.heading-input {
+    font-size: 14px;
+    font-weight: 500;
+    height: 42px;
+    overflow: hidden;
+  }
+  .custom-text-input.body-input {
+    height: 62px;
+    font-size: 12px;
+  }
+
   /* ── Grid ── */
   .grid {
     padding: 28px 40px 80px;
@@ -352,7 +400,7 @@
 <body>
 
 <div class="header">
-  <div class="header-label">BBA · Typography Skill · Font Explorer</div>
+  <div class="header-label">BBA Liminal · Typography Skill · Font Explorer · By Ilan Green</div>
   <h1>Type Pairing<br>Explorer</h1>
   <p>Visual rendering of all Google Fonts pairings from the typography-expert skill. Filter by use case, search by font name, preview real glyphs.</p>
 </div>
@@ -377,6 +425,16 @@
       <button class="sample-btn" data-sample="brand">Brand & Strategy</button>
       <button class="sample-btn" data-sample="cultural">Cultural Institutions</button>
       <button class="sample-btn" data-sample="property">Property</button>
+    </div>
+  </div>
+  <div class="custom-text-row">
+    <div class="text-field-wrap">
+      <label class="text-field-label" for="customHeading">Heading text</label>
+      <textarea class="custom-text-input heading-input" id="customHeading" placeholder="Type heading text…" rows="1"></textarea>
+    </div>
+    <div class="text-field-wrap">
+      <label class="text-field-label" for="customBody">Body text</label>
+      <textarea class="custom-text-input body-input" id="customBody" placeholder="Type body text…" rows="2"></textarea>
     </div>
   </div>
   <div class="search-row">
@@ -663,7 +721,16 @@ const resultsCount = document.getElementById('resultsCount');
 let activeFilter = 'all';
 let searchQuery = '';
 
-function getSample() { return SAMPLES[currentSample]; }
+function getSample() {
+  const hVal = document.getElementById('customHeading')?.value.trim();
+  const bVal = document.getElementById('customBody')?.value.trim();
+  const preset = SAMPLES[currentSample];
+  return {
+    heading: hVal || preset.heading,
+    body:    bVal || preset.body,
+    meta:    preset.meta
+  };
+}
 
 function cssLine(p) {
   const h = p.headingFont;
@@ -776,9 +843,24 @@ document.querySelectorAll('.sample-btn').forEach(btn => {
     document.querySelectorAll('.sample-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentSample = btn.dataset.sample;
+    // Populate the fields with the preset text so user can see and edit it
+    const s = SAMPLES[currentSample];
+    document.getElementById('customHeading').value = s.heading;
+    document.getElementById('customBody').value = s.body;
     render();
   });
 });
+
+// Live update on every keystroke
+document.getElementById('customHeading').addEventListener('input', render);
+document.getElementById('customBody').addEventListener('input', render);
+
+// Populate fields with default preset on load
+(function initFields() {
+  const s = SAMPLES[currentSample];
+  document.getElementById('customHeading').value = s.heading;
+  document.getElementById('customBody').value = s.body;
+})();
 
 searchInput.addEventListener('input', () => {
   searchQuery = searchInput.value;
